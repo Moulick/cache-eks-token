@@ -23,7 +23,7 @@ The token will be refreshed if it's expiring within 30 seconds
 2. If error like `Unable to connect to the server: getting credentials: exec: fork/exec /Users/moulick.aggarwal/.kube/cache-eks-token/cached-aws-eks-token.sh: no such file or directory`, make sure to make the command path be relative to where ever the script exists. You can use `../` in the `command` to move up directories.
 
 ## Dependencies
-1. jq
+1. jq (brew install jq)
 
 ## Limitations
 Currently the script works only for MacOS aka Darwin due to the flags used for `date`. If linux support is needed, feel free to open a issue or PR.

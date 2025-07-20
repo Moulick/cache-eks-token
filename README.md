@@ -19,8 +19,8 @@ The token will be refreshed if it's expiring within 30 seconds
 
 ## Errors
 
-1. If you get error like `Unable to connect to the server: getting credentials: exec: fork/exec /Users/moulick.aggarwal/cache-eks-token/cached-aws-eks-token.sh: permission denied`, simply run `chmod +x cached-aws-eks-token.sh`
-2. If error like `Unable to connect to the server: getting credentials: exec: fork/exec /Users/moulick.aggarwal/.kube/cache-eks-token/cached-aws-eks-token.sh: no such file or directory`, make sure to make the command path be relative to where ever the script exists. You can use `../` in the `command` to move up directories.
+1. If you get error like `Unable to connect to the server: getting credentials: exec: ... permission denied`, simply run `chmod +x cached-aws-eks-token.sh`
+2. If error like `Unable to connect to the server: getting credentials: ... no such file or directory`, make sure to make the command path be relative to where ever the script exists. You can use `../` in the `command` to move up directories.
 
 ## Dependencies
 1. jq (brew install jq)

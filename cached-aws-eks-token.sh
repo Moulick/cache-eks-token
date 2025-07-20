@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-
-# Variables
+# Initialize variables
 declare REGION=""
 declare CLUSTER_NAME=""
 declare OUTPUT=""
 declare SUBCOMMAND=""
 declare ACTION=""
-declare OTHER_ARGS=""
 
 # Loop through arguments
 while [[ $# -gt 0 ]]; do
@@ -32,10 +30,6 @@ while [[ $# -gt 0 ]]; do
       fi
       shift
       ;;
-    --)
-      OTHER_ARGS="$1"
-      shift
-      ;;
     *)
       echo "Unknown option or argument: $1"
       exit 1
@@ -50,11 +44,11 @@ done
 # echo "Action: $ACTION"
 
 
-CACHE_FILE=${HOME}/.kube/cache/aws-${CLUSTER_NAME}.token.json
+CACHE_FILE="${HOME}/.kube/cache/aws-${CLUSTER_NAME}.token.json"
 # Re genereate the token if the expiration time is less than 30 seconds
 RE_AUTH_TIME=30
 
-if [ -f "$CACHE_FILE" ]; then
+if [ -s "$CACHE_FILE" ]; then
   # file age in seconds = current_time - file_modification_time.
   token_expiration=$(jq -r .status.expirationTimestamp "$CACHE_FILE")
   token_expiration_epoch=$(date -u -juf "%Y-%m-%dT%H:%M:%SZ" "$token_expiration" +%s)
@@ -62,8 +56,8 @@ if [ -f "$CACHE_FILE" ]; then
   if [[ $token_life_remaining -gt $RE_AUTH_TIME ]]; then
     cat "${CACHE_FILE}"
   else
-    aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" "$OTHER_ARGS" | tee "$CACHE_FILE"
+    aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" | tee "$CACHE_FILE"
   fi
 else
-  aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" "$OTHER_ARGS" | tee "$CACHE_FILE"
+  aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" | tee "$CACHE_FILE"
 fi

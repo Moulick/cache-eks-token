@@ -8,6 +8,12 @@ It's slow because:
 1. Every kubectl command will do a `aws eks get-token` which makes an api call to AWS
 2. `aws` is python. When running kubectl in a script, you can very clearly see how much performance is lost generating tokens for each kubectl invocation in Activity Monitor.
 
+Here is a quick comparison before and after
+
+| Before                | After                 |
+| --------------------- | --------------------- |
+| ![Slow](img/slow.gif) | ![Fast](img/fast.gif) |
+
 
 # How to use
 1. Clone repo

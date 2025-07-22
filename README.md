@@ -52,6 +52,3 @@ The token will be refreshed if it's expiring within 30 seconds.
 
 ## Dependencies
 1. jq `brew install jq`
-
-## Limitations
-Currently the script works only for MacOS aka Darwin due to the flags used for `date`. If linux support is needed, feel free to open a issue or PR.

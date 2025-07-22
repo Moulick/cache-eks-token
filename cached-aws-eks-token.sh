@@ -47,20 +47,21 @@ done
 readonly CACHE_FILE="${HOME}/.kube/cache/aws-${CLUSTER_NAME}.token.json"
 
 # Regenerate the token if the token is going to expire in less than 30 seconds
-declare needs_refresh=false
 
 if [ -s "$CACHE_FILE" ]; then
+
   EXPIRATION=$(jq -r .status.expirationTimestamp "$CACHE_FILE")
-  TIME_REFRESH=$(date -u -v+30S +%Y-%m-%dT%H:%M:%SZ) # 30 seconds from now in UTC
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    TIME_REFRESH=$(date -u -v+30S +%Y-%m-%dT%H:%M:%SZ) # macOS/BSD syntax
+  else
+    TIME_REFRESH=$(date -u -d '+30 seconds' +%Y-%m-%dT%H:%M:%SZ) # Linux/GNU syntax
+  fi
+
   if [[ $EXPIRATION > $TIME_REFRESH ]]; then
     cat "${CACHE_FILE}"
-  else
-    needs_refresh=true
+    exit 0
   fi
-else
-  needs_refresh=true
 fi
 
-if $needs_refresh; then
-  aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" | tee "$CACHE_FILE"
-fi
+aws --region "$REGION" "$SUBCOMMAND" "$ACTION" --cluster-name "$CLUSTER_NAME" --output "$OUTPUT" | tee "$CACHE_FILE"

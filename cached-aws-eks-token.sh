@@ -44,7 +44,7 @@ done
 # echo "Subcommand: $SUBCOMMAND"
 # echo "Action: $ACTION"
 
-readonly CACHE_FILE="${HOME}/.kube/cache/eks-${CLUSTER_NAME}-${REGION:-${AWS_REGION:-${AWS_DEFAULT_REGION:-default}}}-${AWS_PROFILE:-default}.token.json"
+readonly CACHE_FILE="${HOME}/.kube/cache/eks-${CLUSTER_NAME}-${REGION}-${AWS_PROFILE:-default}.token.json"
 [[ -d "${HOME}/.kube/cache" ]] || mkdir -p "${HOME}/.kube/cache"
 
 # Regenerate the token if the token is going to expire in less than 30 seconds

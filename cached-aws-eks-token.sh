@@ -44,7 +44,11 @@ done
 # echo "Subcommand: $SUBCOMMAND"
 # echo "Action: $ACTION"
 
-readonly CACHE_FILE="${HOME}/.kube/cache/aws-${CLUSTER_NAME}.token.json"
+# Set defaults for REGION and PROFILE if not provided
+REGION="${REGION:-${AWS_DEFAULT_REGION:-default}}"
+PROFILE="${AWS_PROFILE:-default}"
+
+readonly CACHE_FILE="${HOME}/.kube/cache/aws-${PROFILE}-${REGION}-${CLUSTER_NAME}.token.json"
 
 # Regenerate the token if the token is going to expire in less than 30 seconds
 
